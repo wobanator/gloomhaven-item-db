@@ -13,3 +13,8 @@ export const selectedItemState = createState<GloomhavenItem | undefined>(
 	"SelectedItem",
 	undefined
 );
+
+export const selectedItemInfoState = createState<GloomhavenItem | undefined>(
+	"SelectedItemInfo",
+	undefined
+);

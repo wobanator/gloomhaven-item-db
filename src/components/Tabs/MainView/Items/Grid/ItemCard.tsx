@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import { GloomhavenItem } from "../../../../../State/Types";
+import { selectedItemInfoState } from "../../../../../State";
 import { Label } from "semantic-ui-react";
 import { getItemPath } from "../../../../../games/GameData";
 import { GHIcon } from "../../../../Utils";
@@ -22,6 +24,7 @@ const ItemId = (props: Props) => {
 const ItemCard = (props: Props) => {
 	const { item } = props;
 
+	const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
 	const [draw, setDraw] = useState(false);
 	const [showBackside, setShowBackside] = useState(false);
 
@@ -45,12 +48,13 @@ const ItemCard = (props: Props) => {
 					)}
 				</div>
 			)}
-			<img
-				src={getItemPath(item, showBackside)}
-				alt={item.name}
-				onLoad={() => setDraw(true)}
-				className={"item-card"}
-			/>
+            <img
+                src={getItemPath(item, showBackside)}
+                alt={item.name}
+                onLoad={() => setDraw(true)}
+                onClick={() => setSelectedItemInfo(item)}
+                className={"item-card"}
+            />
 			{draw && (
 				<div className="item-card-container-footer">
 					<ItemManagementContainer item={item} />

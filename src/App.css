@@ -494,3 +494,18 @@ button.ui.deleteUser .delete.icon {
 	display: inline-block;
   }
   
+.itemInfo-tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.itemInfo-item {
+    margin: 10px 5px;
+    text-align: center;
+}
+
+.itemInfo-children {
+    display: flex;
+    justify-content: center;
+}

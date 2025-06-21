@@ -1,7 +1,9 @@
 import React from "react";
-import { Table } from "semantic-ui-react";
+import { useSetRecoilState } from "recoil";
+import { Table, Button } from "semantic-ui-react";
 import { getItemIdString } from "../../../../../helpers";
 import { GloomhavenItem } from "../../../../../State/Types";
+import { selectedItemInfoState } from "../../../../../State";
 import { GHIcon } from "../../../../Utils";
 import { ItemManagementContainer } from "../ItemManagement/ItemManagementContainer";
 import { NoItemManagement } from "../ItemManagement/NoItemManagement";
@@ -17,13 +19,16 @@ export const ItemTableRow = (props: Props) => {
 		item,
 		item: { id, name, slot, spent, consumed, lost, source },
 	} = props;
+	const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
 
 	return (
 		<Table.Row key={id}>
 			<Table.Cell className={"id-col"} textAlign={"right"}>
 				{getItemIdString(item)}
 			</Table.Cell>
-			<Table.Cell className={"name-col"}>{name}</Table.Cell>
+			<Table.Cell className={"name-col"}>
+                <Button label={name} onClick={() => setSelectedItemInfo(item)}/>
+            </Table.Cell>
 			<Table.Cell className={"slot-col"} textAlign={"center"}>
 				{slot && (
 					<GHIcon name={`${slot}.png`} folder={"equipment_slot"} />

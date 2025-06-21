@@ -6,6 +6,7 @@ import { displayItemAsState } from "../../../../State";
 import { ItemViewDisplayType } from "../../../../State/Types";
 import { ItemGrid } from "./Grid";
 import { ItemTable } from "./Table";
+import { ItemInfoTree } from "./ItemInfoTree";
 
 export const ItemsView = () => {
 	const items = useItems();
@@ -23,6 +24,7 @@ export const ItemsView = () => {
 			) : (
 				<ItemGrid items={items} />
 			)}
+            <ItemInfoTree/>
 		</>
 	);
 };
