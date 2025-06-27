@@ -11,35 +11,34 @@ type Props = {
 };
 
 export const ItemInfo = (props: Props) => {
-	const { item } = props;
-    const { items } = useRecoilValue(gameDataState);
-	const { resources } = item;
-    const activeItems = useActiveItems();
+  const { item } = props;
+  const { items } = useRecoilValue(gameDataState);
+  const { resources } = item;
+  const activeItems = useActiveItems();
 
-	const findItemId = (id: number) => {
-        let foundItem = activeItems.find(i => i.id === id);
-        if (foundItem) {
-            return (<ItemInfo item={foundItem}/>);
-        } else {
-            return (<div className={"itemInfo-unavailable"}>
-                <Icon name="exclamation triangle" />
-                Unavailable item {id}
-            </div>);
-        }
-	};
+  const findItemId = (id: number) => {
+    let foundItem = activeItems.find(i => i.id === id);
+    if (foundItem) {
+      return (<ItemInfo key={id} item={foundItem}/>);
+    } else {
+      return (<div key={id} className={"itemInfo-unavailable"}>
+              <Icon name="exclamation triangle" />
+              Unavailable item {id}
+              </div>);
+    }
+  };
 
-	return (
-        <div className={"itemInfo-item"}>
-            <Image src={getItemPath(item)} className={"itemInfo-card"} />
-                {resources && Object.entries(resources).map(([resource, value], index) => {
-                    if (resource === "item") 
-                        return (
-                            <div className={"itemInfo-children"}>
-                            {value.map( (itemId: number, itemIndex: number) => { return findItemId(itemId);})}
-                            </div>)
-                    })
-                }
+  const hasChildItems = resources && resources.item && resources.item.length > 0;
+
+  return (
+    <div className={"itemInfo-item"}>
+      <Image src={getItemPath(item)} className={"itemInfo-card"} />
+      {hasChildItems && (
+        <div className={"itemInfo-children"}>
+          {resources.item && resources.item.map((itemId) => { return findItemId(itemId); })}
         </div>
-    );
+      )}
+    </div>
+  );
 };
 

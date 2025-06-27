@@ -1,15 +1,17 @@
 import React from "react";
 import { GloomhavenItem } from "../../../../../State/Types";
 import ItemCard from "./ItemCard";
+import { isItemCapable } from "../../../../../helpers";
 
 import "./itemGrid.scss";
 
 type Props = {
 	items: GloomhavenItem[];
+	activeItems: GloomhavenItem[];
 };
 
 export const ItemGrid = (props: Props) => {
-	const { items } = props;
+	const { items, activeItems } = props;
 	return (
 		<div className="item-grid">
 			{items.map((item) => {
@@ -17,7 +19,8 @@ export const ItemGrid = (props: Props) => {
 				if (item.imageSuffix) {
 					key += `-${item.imageSuffix}`;
 				}
-				return <ItemCard key={key} item={item} />;
+				let capable = isItemCapable(item, activeItems);
+				return <ItemCard key={key} item={item} capable={capable}/>;
 			})}
 		</div>
 	);

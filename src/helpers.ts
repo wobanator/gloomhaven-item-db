@@ -144,3 +144,21 @@ export const getItemIdString = (item: GloomhavenItem) => {
 export const isLocalHost = /localhost|127\.0\.0\.1|::1/.test(
   window.location.host
 );
+
+export const isItemCapable = (item: GloomhavenItem, activeItems: GloomhavenItem[]): boolean => {
+    const { resources } = item;
+
+    // assume item is always active
+    // const active = activeItems.filter((activeItem) => activeItem.id === item.id).length > 0;
+    // if (!active) return false;
+    if (!resources || !resources.item) return true;
+
+    let capable = true;
+    for (const itemId of resources.item) {
+	const resItem = activeItems.find((i) => i.id === itemId);
+	capable = capable && resItem !== undefined && isItemCapable(resItem, activeItems);
+	
+	if (!capable) break;
+    }
+    return capable;
+}

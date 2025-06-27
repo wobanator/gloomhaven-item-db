@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 import { Message } from "semantic-ui-react";
 import useItems from "../../../../hooks/useItems";
+import useActiveItems from "../../../../hooks/useActiveItems";
 import { displayItemAsState } from "../../../../State";
 import { ItemViewDisplayType } from "../../../../State/Types";
 import { ItemGrid } from "./Grid";
@@ -10,6 +11,7 @@ import { ItemInfoTree } from "./ItemInfoTree";
 
 export const ItemsView = () => {
 	const items = useItems();
+	const activeItems = useActiveItems();
 	const displayAs = useRecoilValue(displayItemAsState);
 	return (
 		<>
@@ -20,9 +22,9 @@ export const ItemsView = () => {
 			)}
 
 			{displayAs === ItemViewDisplayType.List ? (
-				<ItemTable items={items} />
+				<ItemTable items={items} activeItems={activeItems}/>
 			) : (
-				<ItemGrid items={items} />
+				<ItemGrid items={items} activeItems={activeItems}/>
 			)}
             <ItemInfoTree/>
 		</>

@@ -6,7 +6,6 @@ import { useIsItemActive } from "./useIsItemActive";
 
 const useActiveItems = (): Array<GloomhavenItem> => {
   const { items } = useRecoilValue(gameDataState);
-  const { resources } = item;
   const isItemActive = useIsItemActive();
   const [activeItems, setActiveItems] = useState<GloomhavenItem[]>([]);
 

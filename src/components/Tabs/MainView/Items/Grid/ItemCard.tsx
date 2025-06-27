@@ -13,6 +13,7 @@ import "./itemCard.scss";
 
 type Props = {
 	item: GloomhavenItem;
+	capable: boolean;
 };
 
 const ItemId = (props: Props) => {
@@ -22,7 +23,7 @@ const ItemId = (props: Props) => {
 };
 
 const ItemCard = (props: Props) => {
-	const { item } = props;
+	const { item, capable } = props;
 
 	const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
 	const [draw, setDraw] = useState(false);
@@ -31,8 +32,8 @@ const ItemCard = (props: Props) => {
 	return (
 		<div className="item-card-container">
 			{draw && (
-				<div className="item-card-container-header">
-					<ItemId item={item} />
+				<div className={"item-card-container-header" + (!capable ? "-incapable" : "")}>
+					<ItemId item={item} capable={capable}/>
 					{item.backDesc && (
 						<GHIcon
 							className="flip"
@@ -56,7 +57,7 @@ const ItemCard = (props: Props) => {
                 className={"item-card"}
             />
 			{draw && (
-				<div className="item-card-container-footer">
+				<div className={"item-card-container-footer" + (!capable ? "-incapable" : "")}>
 					<ItemManagementContainer item={item} />
 				</div>
 			)}

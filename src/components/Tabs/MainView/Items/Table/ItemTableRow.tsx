@@ -1,6 +1,6 @@
 import React from "react";
 import { useSetRecoilState } from "recoil";
-import { Table, Button } from "semantic-ui-react";
+import { Table, Button, SemanticCOLORS } from "semantic-ui-react";
 import { getItemIdString } from "../../../../../helpers";
 import { GloomhavenItem } from "../../../../../State/Types";
 import { selectedItemInfoState } from "../../../../../State";
@@ -12,14 +12,17 @@ import { ItemText } from "./ItemText";
 
 type Props = {
 	item: GloomhavenItem;
+	capable: boolean;
 };
 
 export const ItemTableRow = (props: Props) => {
 	const {
 		item,
 		item: { id, name, slot, spent, consumed, lost, source },
+		capable,
 	} = props;
 	const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
+	const notCapableColor: SemanticCOLORS = "red";
 
 	return (
 		<Table.Row key={id}>
@@ -27,7 +30,7 @@ export const ItemTableRow = (props: Props) => {
 				{getItemIdString(item)}
 			</Table.Cell>
 			<Table.Cell className={"name-col"}>
-                <Button label={name} onClick={() => setSelectedItemInfo(item)}/>
+                <Button label={name} onClick={() => setSelectedItemInfo(item)} color={capable ? undefined : notCapableColor}/>
             </Table.Cell>
 			<Table.Cell className={"slot-col"} textAlign={"center"}>
 				{slot && (

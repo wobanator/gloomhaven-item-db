@@ -14,18 +14,20 @@ import {
 } from "../../../../../State";
 import { ItemTableRow } from "./ItemTableRow";
 import { useSetSorting } from "../../../../../hooks/useSetSorting";
+import { isItemCapable } from "../../../../../helpers";
 
 import "./itemTable.scss";
 
 type Props = {
 	items: GloomhavenItem[];
+	activeItems: GloomhavenItem[];
 };
 
 export const ItemTable = (props: Props) => {
 	const sortProperty = useRecoilValue(sortPropertyState);
 	const sortDirection = useRecoilValue(sortDirectionState);
 	const itemManagementType = useRecoilValue(itemManagementTypeState);
-	const { items } = props;
+	const { items, activeItems } = props;
 	const discount = useRecoilValue(discountState);
 	const setSorting = useSetSorting();
 
@@ -119,10 +121,12 @@ export const ItemTable = (props: Props) => {
 			</Table.Header>
 			<Table.Body>
 				{items.map((item) => {
+					let capable = isItemCapable(item, activeItems);
 					return (
 						<ItemTableRow
 							key={`${item.id}-${item.imageSuffix}`}
 							item={item}
+							capable={capable}
 						/>
 					);
 				})}
