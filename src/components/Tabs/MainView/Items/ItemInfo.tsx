@@ -1,6 +1,7 @@
 import { Image, Icon } from "semantic-ui-react";
-import { useRecoilValue } from "recoil";
-import { useCallback, useEffect, useState } from "react";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { selectedItemInfoState } from "../../../../State";
+import React, { useCallback, useEffect, useState, forwardRef, Ref } from "react";
 import { GloomhavenItem } from "../../../../State/Types";
 import { getItemPath } from "../../../../games/GameData";
 import useActiveItems from "../../../../hooks/useActiveItems";
@@ -17,10 +18,10 @@ type Props = {
     type: ItemInfoType
 };
 
-export const ItemInfo = (props: Props) => {
-  const { item, type } = props;
+export const ItemInfo = forwardRef<HTMLDivElement, Props>(({ item, type }, ref) => {
   const { resources } = item;
   const activeItems = useActiveItems();
+  const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
 
   const findItemId = (id: number, type: ItemInfoType) => {
     let foundItem = activeItems.find(i => i.id === id);
@@ -54,26 +55,30 @@ export const ItemInfo = (props: Props) => {
         {resources.item && resources.item.map((itemId) => findItemId(itemId, ItemInfoType.Child))}
       </div>
   );
+  const imageCode = (
+    <Image src={getItemPath(item)}
+           className={"itemInfo-card"}
+           onClick={isRoot ? null : () => setSelectedItemInfo(item)} />
+  );
 
   return (
   <>
     {!isRoot && (
       <div className={"itemInfo-item"}>
         {parentCode}
-        <Image src={getItemPath(item)} className={"itemInfo-card"} />
+        {imageCode}
         {childrenCode}
       </div>
     )}
     {isRoot && (
       <>
       {parentCode}
-      <div className={"itemInfo-root"}>
-        <Image src={getItemPath(item)} className={"itemInfo-card"} />
+      <div className={"itemInfo-root"} ref={ref}>
+        {imageCode}
       </div>
       {childrenCode}
       </>
     )}
-  </>
-);
-};
+  </>);
+});
 

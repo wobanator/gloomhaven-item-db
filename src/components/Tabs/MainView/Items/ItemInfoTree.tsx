@@ -1,3 +1,4 @@
+import React, { useRef, useEffect } from 'react';
 import { Modal } from "semantic-ui-react";
 import { useRecoilState } from "recoil";
 import { GloomhavenItem } from "../../../../State/Types";
@@ -10,10 +11,24 @@ type Props = {
 
 export const ItemInfoTree = () => {
 	const [selectedItemInfo, setSelectedItemInfo] = useRecoilState(selectedItemInfoState);
+    const rootRef = useRef<HTMLDivElement>(null);
 
 	const onClose = () => {
 		setSelectedItemInfo(undefined);
 	};
+
+    useEffect(() => {
+        if (rootRef.current) {
+            const timer = setTimeout(() => {
+                rootRef.current?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest',
+                });
+            }, 100);
+
+            return () => clearTimeout(timer);
+        }
+    }, [selectedItemInfo]);
 
 	if (!selectedItemInfo) {
 		return null;
@@ -30,7 +45,7 @@ export const ItemInfoTree = () => {
 			<Modal.Header>Item Info</Modal.Header>
 			<Modal.Content>
 				<div className="itemInfo-tree">
-                    <ItemInfo item={selectedItemInfo} type={ItemInfoType.Root} />
+                    <ItemInfo item={selectedItemInfo} type={ItemInfoType.Root} ref={rootRef}/>
 				</div>
 			</Modal.Content>
 		</Modal>
