@@ -501,11 +501,28 @@ button.ui.deleteUser .delete.icon {
 }
 
 .itemInfo-item {
+    display: flex;
+    flex-direction: column;
     margin: 10px 5px;
     text-align: center;
+    align-items: center;
 }
 
 .itemInfo-children {
     display: flex;
     justify-content: center;
+    gap: 30px;
+}
+
+.itemInfo-parents {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    align-items: flex-end;
+
+}
+.itemInfo-root {
+  padding: 10px 10px;
+  border-radius: 5px;
+  background-color: #d2d2d2;
 }
