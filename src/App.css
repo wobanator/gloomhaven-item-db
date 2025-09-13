@@ -521,8 +521,24 @@ button.ui.deleteUser .delete.icon {
     align-items: flex-end;
 
 }
+
 .itemInfo-root {
   padding: 10px 10px;
   border-radius: 10px;
   background-color: #222;
+}
+
+.itemInfo-card-container{
+  position: relative;
+}
+
+.itemInfo-card-container .flip {
+  position: absolute;
+  width: 30%;
+  height: auto;
+  right: 2%;
+  bottom: 2%;
+  background: black;
+  border-radius: 5px;
+  padding: 5px;
 }

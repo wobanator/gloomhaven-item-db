@@ -5,6 +5,7 @@ import React, { useCallback, useEffect, useState, forwardRef, Ref } from "react"
 import { GloomhavenItem } from "../../../../State/Types";
 import { getItemPath } from "../../../../games/GameData";
 import useActiveItems from "../../../../hooks/useActiveItems";
+import { GHIcon } from "../../../Utils";
 
 export enum ItemInfoType
 {
@@ -22,6 +23,8 @@ export const ItemInfo = forwardRef<HTMLDivElement, Props>(({ item, type }, ref) 
   const { resources } = item;
   const activeItems = useActiveItems();
   const setSelectedItemInfo = useSetRecoilState(selectedItemInfoState);
+  const [draw, setDraw] = useState(false);
+  const [showBackside, setShowBackside] = useState(false);
 
   const findItemId = (id: number, type: ItemInfoType) => {
     let foundItem = activeItems.find(i => i.id === id);
@@ -56,9 +59,25 @@ export const ItemInfo = forwardRef<HTMLDivElement, Props>(({ item, type }, ref) 
       </div>
   );
   const imageCode = (
-    <Image src={getItemPath(item)}
-           className={"itemInfo-card"}
-           onClick={isRoot ? null : () => setSelectedItemInfo(item)} />
+    <div className={"itemInfo-card-container"}>
+        <Image src={getItemPath(item, item.backDesc ? showBackside : false)}
+               className={"itemInfo-card"}
+               onLoad={() => setDraw(true)}
+               onClick={isRoot ? null : () => setSelectedItemInfo(item)} />
+        {draw && item.backDesc && (
+            <GHIcon
+                className="flip"
+                name={
+                    showBackside
+                        ? "flip_white.png"
+                        : "flip_back_white.png"
+                }
+                onClick={() =>
+                    setShowBackside((current) => !current)
+                }
+            />
+        )}
+    </div>
   );
 
   return (
