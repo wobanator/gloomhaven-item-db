@@ -1,4 +1,4 @@
-import { GloomhavenItem } from "../State/Types";
+import { GloomhavenItem, GoldType } from "../State/Types";
 import { useRecoilValue } from "recoil";
 import {
   searchState,
@@ -20,7 +20,7 @@ import { useCallback } from "react";
 
 export const useIsItemShown = (): ((item: GloomhavenItem) => boolean) => {
   const slots = useRecoilValue(slotsState);
-  const resources = useRecoilValue(resourcesState);
+  const resourcesOrGold = useRecoilValue(resourcesState);
   const searchString = useRecoilValue(searchState);
   const availableOnly = useRecoilValue(availableOnlyState);
   const selectedClass = useRecoilValue(selectedClassState);
@@ -48,6 +48,7 @@ export const useIsItemShown = (): ((item: GloomhavenItem) => boolean) => {
       slot,
       name,
       resources: itemResources,
+      cost,
       desc,
       count,
       specialUnlock,
@@ -111,13 +112,13 @@ export const useIsItemShown = (): ((item: GloomhavenItem) => boolean) => {
         if (slots.length > 0 && !slots.includes(slot)) {
           return false;
         }
-        if (resources.length > 0) {
+        if (resourcesOrGold.length > 0) {
           if (itemResources) {
             const itemResourceTypes = Object.keys(itemResources);
-            if (!resources.some((r) => itemResourceTypes.indexOf(r) >= 0)) {
+            if (!resourcesOrGold.some((r) => itemResourceTypes.indexOf(r) >= 0)) {
               return false;
             }
-          } else {
+          } else if (cost > 0 && !resourcesOrGold.includes(GoldType.Gold)) {
             return false;
           }
         }
@@ -153,7 +154,7 @@ export const useIsItemShown = (): ((item: GloomhavenItem) => boolean) => {
       item,
       itemsOwnedBy,
       prosperity,
-      resources,
+      resourcesOrGold,
       scenarioCompleted,
       searchString,
       selectedClass,

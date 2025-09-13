@@ -2,29 +2,29 @@ import React, { useCallback } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { Form } from "semantic-ui-react";
 import { gameDataState, resourcesState } from "../../../../../State";
-import { ResourceTypes } from "../../../../../State/Types";
+import { ResourceTypes, GoldType, ResourceOrGoldType } from "../../../../../State/Types";
 import { GHIcon } from "../../../../Utils";
 
 export const FilterResorces = () => {
-	const [resources, setResourcesState] = useRecoilState(resourcesState);
+	const [resourcesOrGold, setResourcesState] = useRecoilState(resourcesState);
 	const { resources: gameResource } = useRecoilValue(gameDataState);
 
 	const setFilterResource = useCallback(
-		(resource?: ResourceTypes) => {
-			if (!resource) {
+		(resourceOrGold?: ResourceOrGoldType) => {
+			if (!resourceOrGold) {
 				setResourcesState([]);
 				return;
 			}
-			const value = Object.assign([], resources);
-			const index = value.indexOf(resource);
+			const value = Object.assign([], resourcesOrGold);
+			const index = value.indexOf(resourceOrGold);
 			if (index !== -1) {
 				value.splice(index, 1);
 			} else {
-				value.push(resource);
+				value.push(resourceOrGold);
 			}
 			setResourcesState(value);
 		},
-		[resources, setResourcesState]
+		[resourcesOrGold, setResourcesState]
 	);
 
 	if (!gameResource || gameResource.length === 0) {
@@ -35,7 +35,7 @@ export const FilterResorces = () => {
 			<label>Resource:</label>
 			<Form.Radio
 				label={"all"}
-				checked={resources.length === 0}
+				checked={resourcesOrGold.length === 0}
 				onChange={() => setFilterResource(undefined)}
 			/>
 			{gameResource &&
@@ -48,13 +48,27 @@ export const FilterResorces = () => {
 								folder="resources"
 							/>
 						}
-						checked={resources.includes(resource as ResourceTypes)}
+						checked={resourcesOrGold.includes(resource as ResourceTypes)}
 						onChange={() =>
 							setFilterResource(resource as ResourceTypes)
 						}
 						alt={resource}
 					/>
 				))}
+            <Form.Checkbox
+                key={"gold"}
+                label={
+                    <GHIcon
+                        name={"gold.png"}
+                        folder="resources"
+                    />
+                }
+                checked={resourcesOrGold.includes(GoldType.Gold)}
+                onChange={() =>
+                    setFilterResource(GoldType.Gold)
+                }
+                alt={"gold"}
+            />
 		</Form.Group>
 	);
 };

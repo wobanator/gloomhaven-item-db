@@ -147,6 +147,12 @@ export enum ResourceTypes {
 	Metal = "metal",
 }
 
+export enum GoldType {
+    Gold = "gold",
+}
+
+export type ResourceOrGoldType = ResourceTypes | GoldType;
+
 export interface Summon {
 	hp: number;
 	move: number;

@@ -3,13 +3,13 @@ import { createState } from "./CommonState";
 import {
 	ClassesInUse,
 	GloomhavenItemSlot,
-	ResourceTypes,
+	ResourceOrGoldType,
 	SortDirection,
 	SortProperty,
 } from "./Types";
 
 export const slotsState = createState<GloomhavenItemSlot[]>("slotState", []);
-export const resourcesState = createState<ResourceTypes[]>(
+export const resourcesState = createState<ResourceOrGoldType[]>(
 	"resourcesState",
 	[]
 );
