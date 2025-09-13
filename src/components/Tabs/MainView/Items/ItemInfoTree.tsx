@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Modal } from "semantic-ui-react";
+import { Modal, Button } from "semantic-ui-react";
 import { useRecoilState } from "recoil";
 import { GloomhavenItem } from "../../../../State/Types";
 import { selectedItemInfoState } from "../../../../State";
@@ -48,6 +48,9 @@ export const ItemInfoTree = () => {
                     <ItemInfo item={selectedItemInfo} type={ItemInfoType.Root} ref={rootRef}/>
 				</div>
 			</Modal.Content>
+			<Modal.Actions>
+				<Button negative content="Close" onClick={onClose} />
+			</Modal.Actions>
 		</Modal>
 	);
 };
